@@ -1,33 +1,25 @@
 import axios from './AxiosCfg';
 
-let callbackList = []
 
-const updateSinusValue = () => {
+let sock;
 
-    axios.get('/api').then(result => {
-        // console.log(result.data.value);
-
-        // console.log(callbackList)
-        if (callbackList.length < 6) {
-            console.log(callbackList.length)
-            callbackList.forEach((element, index, array) => {
-                element(result.data.value);
-            });
-        }
-    }).catch(error => {
-        console.log(error);
-    }).finally(() => { });
-}
-
-const addCallbackToQueue = (callB) => {
-    if (callbackList.includes(callB)) {
-        console.log('już jest');
-    } else {
-
-        callbackList.push(callB)
+const initWebSocket = () => {
+    sock.onmessage = (event) => {
+        console.log(event.data);
     }
 }
 
-setInterval(updateSinusValue, 200);
+const webSocketConnect = () => {
+    sock = new WebSocket('ws://127.0.0.1:8000', 'json');
+    console.log(sock);
+    initWebSocket();
+}
 
-export default addCallbackToQueue
+const sendMessageToWebsSocket = () =>{
+    sock.send('Witam z reacta');
+}
+
+
+export const connect = webSocketConnect;
+export const send = sendMessageToWebsSocket;
+

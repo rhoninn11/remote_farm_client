@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import updateQueue from'./Backend';
+import { connect, send } from './Backend';
 
 
 import logo from './logo.svg';
@@ -12,7 +12,6 @@ function App() {
 
   const [sinVal, setSinVal] = useState(2);
 
-  updateQueue(setSinVal);
 
   return (
     <div className="App">
@@ -21,7 +20,9 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <SinVal value={sinVal}/>
+        <SinVal value={sinVal} />
+        <button onClick={() => connect()}>Connect ws</button>
+        <button onClick={() => send()}>Send message</button>
         <a
           className="App-link"
           href="https://reactjs.org"
